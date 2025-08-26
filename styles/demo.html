@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Imagine Job CSS Injection Demo</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+            background-color: #f5f5f5;
+        }
+        .demo-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .demo-button {
+            background: #007acc;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 10px 5px;
+        }
+        .demo-button:hover {
+            background: #005a9e;
+        }
+        .code-block {
+            background: #f8f8f8;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 15px;
+            margin: 15px 0;
+            font-family: monospace;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="demo-container">
+        <h1>Imagine Job CSS Injection System</h1>
+
+        <h2>How It Works</h2>
+        <p>This demo shows how the CSS injection system automatically injects styles based on class names:</p>
+
+        <div class="code-block">
+// CSS is automatically injected when needed
+await window.imagineJobCSSInjector.injectCSS();
+
+// Then you can use the classes directly
+&lt;div class="imaginejob-modal"&gt;
+    &lt;div class="imaginejob-modalContent"&gt;
+        &lt;p class="imaginejob-modalTitle"&gt;Title&lt;/p&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+        </div>
+
+        <h2>Demo Buttons</h2>
+        <p>Click these buttons to see the CSS injection in action:</p>
+
+        <button class="demo-button" onclick="injectCSS()">Inject CSS</button>
+        <button class="demo-button" onclick="createModal()">Create Modal</button>
+        <button class="demo-button" onclick="removeCSS()">Remove CSS</button>
+
+        <div id="modal-container"></div>
+
+        <h2>Features</h2>
+        <ul>
+            <li><strong>Automatic Injection:</strong> CSS is injected only when needed</li>
+            <li><strong>Unique Class Names:</strong> All classes use 'imaginejob-' prefix to avoid conflicts</li>
+            <li><strong>Fallback Support:</strong> Inline CSS fallback if external file fails to load</li>
+            <li><strong>Chrome Extension Ready:</strong> Works seamlessly with Chrome extensions</li>
+            <li><strong>Animation Support:</strong> Built-in fade-in animation for modals</li>
+        </ul>
+
+        <h2>CSS Classes Available</h2>
+        <div class="code-block">
+.imaginejob-modal          // Main modal container
+.imaginejob-modalContent   // Modal content wrapper
+.imaginejob-modalTitle     // Modal title
+.imaginejob-form          // Form container
+.imaginejob-formGroup     // Form field group
+.imaginejob-label         // Form labels
+.imaginejob-input         // Form inputs
+.imaginejob-footer        // Modal footer
+.imaginejob-button        // Buttons
+.imaginejob-button-cancel // Cancel button
+        </div>
+    </div>
+
+    <script src="css-injector.js"></script>
+    <script>
+        async function injectCSS() {
+            if (window.imagineJobCSSInjector) {
+                await window.imagineJobCSSInjector.injectCSS();
+                alert('CSS injected successfully!');
+            } else {
+                alert('CSS injector not loaded');
+            }
+        }
+
+        async function createModal() {
+            if (!window.imagineJobCSSInjector) {
+                alert('Please inject CSS first');
+                return;
+            }
+
+            const modal = `
+                <div class="imaginejob-modal">
+                    <div class="imaginejob-modalContent">
+                        <p class="imaginejob-modalTitle">Demo Modal</p>
+                        <div class="imaginejob-form">
+                            <div class="imaginejob-formGroup">
+                                <label class="imaginejob-label">Demo Field</label>
+                                <input class="imaginejob-input" type="text" placeholder="Enter something...">
+                            </div>
+                        </div>
+                        <div class="imaginejob-footer">
+                            <button class="imaginejob-button imaginejob-button-cancel" onclick="closeModal()">Close</button>
+                            <button class="imaginejob-button">Save</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            document.getElementById('modal-container').innerHTML = modal;
+        }
+
+        function closeModal() {
+            document.getElementById('modal-container').innerHTML = '';
+        }
+
+        function removeCSS() {
+            if (window.imagineJobCSSInjector) {
+                window.imagineJobCSSInjector.removeCSS();
+                alert('CSS removed successfully!');
+            }
+        }
+    </script>
+</body>
+</html>

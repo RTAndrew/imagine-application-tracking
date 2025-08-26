@@ -1,4 +1,3 @@
-
 console.log("Xing content script loaded");
 
 // Listen for messages from background script
@@ -8,6 +7,16 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 
 		getJobDetails().then((details) => {
 			console.log("Job details:", details);
+			const Job = new JobDetailsModal({
+				jobTitle: details.jobTitle,
+				companyName: details.companyName,
+				hrRecruiter: details?.hrRecruiter ?? "",
+				jobUrl: details?.url ?? "",
+			});
+
+			Job.createModal();
+
+			return;
 			sendResponse(details);
 		});
 		return true; // Keep message channel open for async response

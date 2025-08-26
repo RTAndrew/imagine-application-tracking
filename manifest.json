@@ -10,11 +10,16 @@
 	"content_scripts": [
 		{
 			"matches": ["https://www.xing.com/jobs/*"],
-			"js": ["job-boards/xing.js"]
+			"js": [
+				"styles/css-injector.js",
+				"job-details-modal.js",
+				"job-boards/xing.js"
+			]
 		},
 		{
 			"matches": ["https://docs.google.com/forms/*"],
-			"js": ["app.js"]
+			"js": ["styles/css-injector.js", "app.js"]
 		}
-	]
+	],
+	"web_accessible_resources": ["styles.css"]
 }
