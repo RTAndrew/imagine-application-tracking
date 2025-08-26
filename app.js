@@ -4,7 +4,7 @@ const initializeForm = () => {
 	);
 
 	if (emailInput) {
-		emailInput.value = "insanityrodax@gmail.com";
+		emailInput.value = "example@gmail.com";
 		emailInput.dispatchEvent(new Event("input", { bubbles: true }));
 	}
 };
@@ -22,6 +22,10 @@ const fillJobDetails = (details) => {
 		"input[type='text'][aria-labelledby='i16 i19']"
 	);
 
+	const recruiter = document.querySelector(
+		"input[type='text'][aria-labelledby='i21 i24']"
+	);
+
 	if (jobTitle) {
 		jobTitle.value = details.jobTitle;
 		jobTitle.dispatchEvent(new Event("input", { bubbles: true }));
@@ -37,15 +41,19 @@ const fillJobDetails = (details) => {
 		companyName.dispatchEvent(new Event("input", { bubbles: true }));
 	}
 
+	if (recruiter) {
+		recruiter.value = details.recruiter;
+		recruiter.dispatchEvent(new Event("input", { bubbles: true }));
+	}
+
 	const submitButton = document.querySelector("div[aria-label='Submit']");
 
 	if (submitButton) {
 		submitButton.click();
 		submitButton.dispatchEvent(new Event("click", { bubbles: true }));
 	}
-
-	// TODO: Click on the submit other button
 };
+
 
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 	console.log("request", request);
