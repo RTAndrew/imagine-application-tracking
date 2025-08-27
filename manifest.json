@@ -9,7 +9,11 @@
 	},
 	"content_scripts": [
 		{
-			"matches": ["https://www.xing.com/jobs/*", "https://www.stepstone.de/*"],
+			"matches": [
+				"https://*.xing.com/jobs/*",
+				"https://*.stepstone.de/*",
+				"https://*.join.com/*"
+			],
 			"js": [
 				"styles/css-injector.js",
 				"job-details-modal.js",

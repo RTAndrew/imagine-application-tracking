@@ -79,9 +79,57 @@ class StepStone extends JobBoardInterface {
 	}
 }
 
+class Join extends JobBoardInterface {
+	constructor(url) {
+		super(url);
+	}
+
+	getJobTitle() {
+		// Join.com does not have a stable ID for the job title,
+		// but it has for the job description,
+		// 1. Get the element with the stable ID
+		const aboutJobDiv = document.getElementById("about-job");
+
+		// 2. Get its parent element
+		const parentDiv = aboutJobDiv.parentElement;
+
+		// 3. From the parent, get the H1
+		const heading = parentDiv.querySelector("h1");
+		return heading.textContent.trim();
+	}
+
+	async getJobDetails() {
+		try {
+			const jobTitle = this.getJobTitle();
+			const companyName = document
+				.querySelector("div[data-testid='CompanyInfo']")
+				.querySelector("h2");
+
+			const details = {
+				jobTitle: jobTitle ? jobTitle : "",
+				companyName: companyName ? companyName.textContent.trim() : "",
+				url: window.location.href,
+				recruiter: "",
+			};
+
+			this.sendJobDetailsToFormPage(details);
+
+			return details;
+		} catch (error) {
+			console.error("Error getting job details:", error);
+			return { error: error.message };
+		}
+	}
+
+	async sendJobDetailsToFormPage(details) {
+		super.sendJobDetailsToFormPage(details);
+	}
+}
+
 const JobBoardFactory = (url) => {
 	if (url.includes("xing.com")) return new Xing(url);
 	if (url.includes("stepstone.de")) return new StepStone(url);
+	if (url.includes("join.com")) return new Join(url);
 
 	return null;
 };
@@ -115,4 +163,3 @@ chrome.runtime.onMessage.addListener(async (request, sender, sendResponse) => {
 		return true; // Keep message channel open for async response
 	}
 });
-

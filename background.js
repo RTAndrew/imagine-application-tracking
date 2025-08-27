@@ -20,6 +20,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 		console.log("Forwarding job details to Google Forms page");
 
 		// Find the Google Forms tab and send the job details
+		// TODO: check if the tab is already open, otherwise open it
 		chrome.tabs.query({ url: "https://docs.google.com/forms/*" }, (tabs) => {
 			if (tabs.length > 0) {
 				chrome.tabs.sendMessage(
@@ -44,7 +45,6 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 					success: true,
 					message: "Job details forwarded successfully",
 				});
-
 			} else {
 				console.log("No Google Forms tab found to forward job details");
 			}
