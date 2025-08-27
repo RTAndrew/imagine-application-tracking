@@ -163,12 +163,74 @@ class Greenhouse extends JobBoardInterface {
 		super.sendJobDetailsToFormPage(details);
 	}
 }
+class LinkedIn extends JobBoardInterface {
+	constructor(url) {
+		super(url);
+	}
+
+	async getJobDetails() {
+		try {
+			let jobTitle = "";
+			let companyName = "";
+			let recruiter =
+				document
+					.getElementsByClassName("hirer-card__hirer-information")?.[0]
+					?.querySelectorAll("a")?.[0]
+					?.textContent.trim() ?? "";
+
+			// 1. Check if the job is on double panel
+			const doublePanel = document.getElementsByClassName(
+				"job-details-jobs-unified-top-card__container--two-pane"
+			);
+
+			// 2. If the job is on double panel,
+			// get the title
+			if (doublePanel.length > 0) {
+				jobTitle = doublePanel[0].querySelectorAll("a")[2].textContent.trim();
+
+				companyName = doublePanel[0]
+					.querySelectorAll("a")[1]
+					.textContent.trim();
+			} else {
+				jobTitle = document
+					.querySelector("h1[class='t-24 t-bold inline']")
+					.textContent.trim();
+				companyName = document
+					.getElementsByClassName(
+						"job-details-jobs-unified-top-card__company-name"
+					)[0]
+					.textContent.trim();
+			}
+
+			const details = {
+				recruiter,
+				jobTitle,
+				companyName,
+				url: window.location.href,
+			};
+
+			console.log("details", details);
+
+			this.sendJobDetailsToFormPage(details);
+
+			return details;
+		} catch (error) {
+			console.error("Error getting job details:", error);
+			return { error: error.message };
+		}
+	}
+
+	async sendJobDetailsToFormPage(details) {
+		super.sendJobDetailsToFormPage(details);
+	}
+}
 
 const JobBoardFactory = (url) => {
 	if (url.includes("xing.com")) return new Xing(url);
 	if (url.includes("stepstone.de")) return new StepStone(url);
 	if (url.includes("join.com")) return new Join(url);
 	if (url.includes("greenhouse.io")) return new Greenhouse(url);
+	if (url.includes("linkedin.com")) return new LinkedIn(url);
 
 	return null;
 };
@@ -191,7 +253,7 @@ chrome.runtime.onMessage.addListener(async (request, sender, sendResponse) => {
 		const jobModal = new JobDetailsModal({
 			jobTitle: jobDetails.jobTitle,
 			companyName: jobDetails.companyName,
-			hrRecruiter: jobDetails?.hrRecruiter ?? "",
+			recruiter: jobDetails?.recruiter ?? "",
 			jobUrl: jobDetails?.url ?? "",
 		});
 

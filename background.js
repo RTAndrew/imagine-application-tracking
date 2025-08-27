@@ -12,7 +12,6 @@ chrome.contextMenus.create(
 );
 
 // Listen for messages from content scripts
-// TODO: send back the response to the content script to close the modal
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 	console.log("Background received message:", request);
 

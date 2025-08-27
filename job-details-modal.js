@@ -1,8 +1,10 @@
+//TODO: make jobTitle and companyName mandatory
+// TODO: even if does not detect the Job, allow it to still open the modal
 class JobDetailsModal {
 	constructor(parameters) {
 		this.jobTitle = parameters.jobTitle;
 		this.companyName = parameters.companyName;
-		this.hrRecruiter = parameters.hrRecruiter;
+		this.hrRecruiter = parameters.recruiter;
 		this.jobUrl = parameters.jobUrl;
 		this.modalId = this.generateUniqueId();
 	}

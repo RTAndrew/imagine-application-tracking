@@ -13,7 +13,8 @@
 				"https://*.xing.com/jobs/*",
 				"https://*.stepstone.de/*",
 				"https://*.join.com/*",
-				"https://*.greenhouse.io/*"
+				"https://*.greenhouse.io/*",
+				"https://*.linkedin.com/jobs/*"
 			],
 			"js": [
 				"styles/css-injector.js",

@@ -68,6 +68,10 @@ const fillJobForm = (details) => {
 		submitButton.click();
 		submitButton.dispatchEvent(new Event("click", { bubbles: true }));
 	}
+
+	setTimeout(() => {
+		window.location.reload();
+	}, 1000);
 };
 
 // Listen for messages from the content script
