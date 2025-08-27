@@ -32,8 +32,6 @@ class Xing extends JobBoardInterface {
 				url: window.location.href,
 			};
 
-			this.sendJobDetailsToFormPage(details);
-
 			return details;
 		} catch (error) {
 			console.error("Error getting job details:", error);
@@ -112,8 +110,6 @@ class Join extends JobBoardInterface {
 				recruiter: "",
 			};
 
-			this.sendJobDetailsToFormPage(details);
-
 			return details;
 		} catch (error) {
 			console.error("Error getting job details:", error);
@@ -149,8 +145,6 @@ class Greenhouse extends JobBoardInterface {
 				url: window.location.href,
 				recruiter: "",
 			};
-
-			this.sendJobDetailsToFormPage(details);
 
 			return details;
 		} catch (error) {
@@ -211,8 +205,6 @@ class LinkedIn extends JobBoardInterface {
 
 			console.log("details", details);
 
-			this.sendJobDetailsToFormPage(details);
-
 			return details;
 		} catch (error) {
 			console.error("Error getting job details:", error);
@@ -237,30 +229,35 @@ const JobBoardFactory = (url) => {
 
 // Listen for messages from background script
 chrome.runtime.onMessage.addListener(async (request, sender, sendResponse) => {
-	if (request.action === "getJobDetails") {
-		console.log("Getting job details...");
+	try {
+		if (request.action === "getJobDetails") {
+			console.log("Getting job details...");
 
-		// 1. check the URL and create the appropriate instance of the JobBoardInterface
-		const extractJobBoardUrl = window.location.href;
-		const jobBoardInstance = JobBoardFactory(extractJobBoardUrl);
+			// 1. check the URL and create the appropriate instance of the JobBoardInterface
+			const extractJobBoardUrl = window.location.href;
+			const jobBoardInstance = JobBoardFactory(extractJobBoardUrl);
 
-		console.log("jobBoardInstance", jobBoardInstance);
+			console.log("jobBoardInstance", jobBoardInstance);
 
-		// 2. get the job details
-		const jobDetails = await jobBoardInstance.getJobDetails();
+			// 2. get the job details
+			const jobDetails = await jobBoardInstance.getJobDetails();
 
-		// 3. create the job details modal
-		const jobModal = new JobDetailsModal({
-			jobTitle: jobDetails.jobTitle,
-			companyName: jobDetails.companyName,
-			recruiter: jobDetails?.recruiter ?? "",
-			jobUrl: jobDetails?.url ?? "",
-		});
+			// 3. create the job details modal
+			const jobModal = new JobDetailsModal({
+				jobTitle: jobDetails.jobTitle,
+				companyName: jobDetails.companyName,
+				recruiter: jobDetails?.recruiter ?? "",
+				jobUrl: jobDetails?.url ?? "",
+			});
 
-		await jobModal.createModal();
+			await jobModal.createModal();
 
-		sendResponse(jobDetails);
+			sendResponse(jobDetails);
 
-		return true; // Keep message channel open for async response
+			return true; // Keep message channel open for async response
+		}
+	} catch (error) {
+		console.error("Error getting job details:", error);
+		return { error: error.message };
 	}
 });

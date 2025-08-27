@@ -1,3 +1,23 @@
+const saveJobDetails = async (event, data, saveButton) => {
+	event.preventDefault();
+
+	const response = await chrome.runtime.sendMessage({
+		action: "fillJobDetails",
+		content: {
+			jobTitle: data.jobTitle,
+			companyName: data.companyName,
+			recruiter: data.hrRecruiter,
+			url: data.jobUrl,
+		},
+	});
+
+	if (response.success) {
+		saveButton.textContent = "Saved";
+		saveButton.disabled = true;
+		saveButton.classList.add("imaginejob-buttonSaved");
+	}
+};
+
 //TODO: make jobTitle and companyName mandatory
 // TODO: even if does not detect the Job, allow it to still open the modal
 class JobDetailsModal {
@@ -69,31 +89,16 @@ class JobDetailsModal {
 			if (modal) {
 				document.body.removeChild(modal);
 			}
+
+			// TODO: remove eventListeners
 		});
 
 		// Save the job details
 		const saveButton = document.querySelector(".imaginejob-button-save");
-		saveButton.addEventListener("click", async (e) => {
-			e.preventDefault();
-
-			const response = await chrome.runtime.sendMessage({
-				action: "fillJobDetails",
-				content: {
-					jobTitle: this.jobTitle,
-					companyName: this.companyName,
-					recruiter: this.hrRecruiter,
-					url: this.jobUrl,
-				},
-			});
-
-			if (response.success) {
-				saveButton.textContent = "Saved";
-				saveButton.disabled = true;
-				saveButton.classList.add("imaginejob-buttonSaved");
-				// TODO: add a message to the user that the job details have been saved
-				// cancelButton.click();
-			}
-		});
+		// TODO: there is a bug where the data is sent even without clicking the button
+		saveButton.addEventListener("click", (e) =>
+			saveJobDetails(e, this, saveButton)
+		);
 
 		const input = document.querySelectorAll(".imaginejob-input");
 		input.forEach((input) => {
