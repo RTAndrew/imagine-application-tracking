@@ -1,10 +1,12 @@
+console.log("Imagine Job Tracking background script loaded");
+
 const initializeForm = () => {
 	const emailInput = document.querySelector(
 		"input[type='email'][jsname='YPqjbf']"
 	);
 
 	if (emailInput) {
-		emailInput.value = "example@gmail.com";
+		emailInput.value = "insanityrodax@gmail.com";
 		emailInput.dispatchEvent(new Event("input", { bubbles: true }));
 	}
 };
@@ -53,7 +55,6 @@ const fillJobDetails = (details) => {
 		submitButton.dispatchEvent(new Event("click", { bubbles: true }));
 	}
 };
-
 
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 	console.log("request", request);

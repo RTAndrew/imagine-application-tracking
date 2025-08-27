@@ -45,7 +45,7 @@ chrome.contextMenus.onClicked.addListener((info, tab) => {
 	console.log("Context menu clicked:", info, tab);
 
 	// Send message to content script to get job details
-	if (tab && tab.url && tab.url.includes("xing.com/jobs")) {
+
 		console.log("Sending message to Xing content script");
 
 		chrome.tabs.sendMessage(tab.id, { action: "getJobDetails" }, (response) => {
@@ -55,7 +55,5 @@ chrome.contextMenus.onClicked.addListener((info, tab) => {
 				console.log("Job details received:", response);
 			}
 		});
-	} else {
-		console.log("Not a Xing jobs page, skipping");
-	}
+
 });
