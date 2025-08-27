@@ -50,7 +50,7 @@ class JobDetailsModal {
           </form>
 
           <div class="imaginejob-footer">
-            <button class="imaginejob-button imaginejob-button-cancel">Cancel</button>
+            <button class="imaginejob-button imaginejob-button-cancel">Close</button>
             <button class="imaginejob-button imaginejob-button-save">Save</button>
           </div>
         </div>
@@ -71,10 +71,10 @@ class JobDetailsModal {
 
 		// Save the job details
 		const saveButton = document.querySelector(".imaginejob-button-save");
-		saveButton.addEventListener("click", (e) => {
+		saveButton.addEventListener("click", async (e) => {
 			e.preventDefault();
 
-			chrome.runtime.sendMessage({
+			const response = await chrome.runtime.sendMessage({
 				action: "fillJobDetails",
 				content: {
 					jobTitle: this.jobTitle,
@@ -83,6 +83,14 @@ class JobDetailsModal {
 					url: this.jobUrl,
 				},
 			});
+
+			if (response.success) {
+				saveButton.textContent = "Saved";
+				saveButton.disabled = true;
+				saveButton.classList.add("imaginejob-buttonSaved");
+				// TODO: add a message to the user that the job details have been saved
+				// cancelButton.click();
+			}
 		});
 
 		const input = document.querySelectorAll(".imaginejob-input");

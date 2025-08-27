@@ -110,6 +110,16 @@
   transform: translateY(-1px);
 }
 
+.imaginejob-buttonSaved {
+  background-color: #2ecc40;
+  color: #ffffff;
+}
+
+.imaginejob-buttonSaved:hover {
+  background-color: #2ecc40;
+  transform: translateY(-1px);
+}
+
 /* Animation for modal appearance */
 @keyframes imaginejob-modalFadeIn {
   from {

@@ -115,11 +115,11 @@ class CSSInjector {
                 cursor: pointer;
                 transition: all 0.2s ease;
             }
-            .imaginejob-button:not(.imaginejob-button-cancel) {
+            .imaginejob-button:not(.imaginejob-button-cancel):not(.imaginejob-buttonSaved) {
                 background-color: #007acc;
                 color: #ffffff;
             }
-            .imaginejob-button:not(.imaginejob-button-cancel):hover {
+            .imaginejob-button:not(.imaginejob-button-cancel):not(.imaginejob-buttonSaved):hover {
                 background-color: #005a9e;
                 transform: translateY(-1px);
             }
@@ -130,6 +130,15 @@ class CSSInjector {
             .imaginejob-button-cancel:hover {
                 background-color: #404040;
                 transform: translateY(-1px);
+            }
+            .imaginejob-buttonSaved {
+                background-color: #28a745 !important;
+                color: #ffffff;
+                cursor: not-allowed;
+            }
+            .imaginejob-buttonSaved:hover {
+                background-color: #28a745 !important;
+                transform: none;
             }
             @keyframes imaginejob-modalFadeIn {
                 from {
@@ -142,7 +151,7 @@ class CSSInjector {
                 }
             }
             .imaginejob-modal {
-                animation: imaginejob-modalFadeIn 0.3s ease-out;
+                animation: imaginejob-modalFadeIn 0.2s ease-out;
             }
         `;
     }
