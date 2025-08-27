@@ -1,10 +1,19 @@
-// TODO: initialize the modal with ID so it can be removed
 class JobDetailsModal {
 	constructor(parameters) {
 		this.jobTitle = parameters.jobTitle;
 		this.companyName = parameters.companyName;
 		this.hrRecruiter = parameters.hrRecruiter;
 		this.jobUrl = parameters.jobUrl;
+		this.modalId = this.generateUniqueId();
+	}
+
+	generateUniqueId() {
+		return (
+			"imaginejob-modal-" +
+			Date.now() +
+			"-" +
+			Math.random().toString(36).substr(2, 9)
+		);
 	}
 
 	async createModal() {
@@ -14,7 +23,7 @@ class JobDetailsModal {
 		}
 
 		const modal = `
-      <modal class="imaginejob-modal">
+      <modal class="imaginejob-modal" id="${this.modalId}">
         <div class="imaginejob-modalContent">
           <p class="imaginejob-modalTitle">Imagine - Application Tracking</p>
 
@@ -54,20 +63,16 @@ class JobDetailsModal {
 		const cancelButton = document.querySelector(".imaginejob-button-cancel");
 		cancelButton.addEventListener("click", (e) => {
 			e.preventDefault();
-			document.body.removeChild(document.querySelector(".imaginejob-modal"));
+			const modal = document.getElementById(this.modalId);
+			if (modal) {
+				document.body.removeChild(modal);
+			}
 		});
 
 		// Save the job details
 		const saveButton = document.querySelector(".imaginejob-button-save");
 		saveButton.addEventListener("click", (e) => {
 			e.preventDefault();
-			console.log(
-				"saveButton",
-				this.jobTitle,
-				this.companyName,
-				this.hrRecruiter,
-				this.jobUrl
-			);
 
 			chrome.runtime.sendMessage({
 				action: "fillJobDetails",

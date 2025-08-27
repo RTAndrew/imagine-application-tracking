@@ -1,5 +1,7 @@
 console.log("Imagine Job Tracking background script loaded");
 
+const FORM_URL = "https://docs.google.com/forms/d/e/1FAIpQLSeDBBvxuso7eWPZhAM0DEPPaH1N_BxeH-8UWcSJBFTtUd8tCA/viewform"
+
 const initializeForm = () => {
 	const emailInput = document.querySelector(
 		"input[type='email'][jsname='YPqjbf']"
@@ -11,7 +13,19 @@ const initializeForm = () => {
 	}
 };
 
-const fillJobDetails = (details) => {
+/**
+ * Fills the job form with the details.
+ *
+ * The form is located in the following URL:
+ * @link {@link FORM_URL}
+ *
+ * @param {Object} details - The details of the job
+ * @param {string} details.jobTitle - The title of the job
+ * @param {string} details.url - The URL/link to the job posting
+ * @param {string} details.companyName - The name of the company
+ * @param {string} details.recruiter - The name of the recruiter
+ */
+const fillJobForm = (details) => {
 	const jobTitle = document.querySelector(
 		"input[type='text'][aria-labelledby='i6 i9']"
 	);
@@ -44,7 +58,7 @@ const fillJobDetails = (details) => {
 	}
 
 	if (recruiter) {
-		recruiter.value = details.recruiter;
+		recruiter.value = details?.recruiter ?? "";
 		recruiter.dispatchEvent(new Event("input", { bubbles: true }));
 	}
 
@@ -56,13 +70,14 @@ const fillJobDetails = (details) => {
 	}
 };
 
+// Listen for messages from the content script
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 	console.log("request", request);
 
 	if (request.action === "fillJobDetails") {
 		console.log("Getting job details...");
 
-		fillJobDetails(request.content);
+		fillJobForm(request.content);
 
 		return true; // Keep message channel open for async response
 	}

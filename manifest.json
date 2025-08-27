@@ -18,7 +18,7 @@
 		},
 		{
 			"matches": ["https://docs.google.com/forms/*"],
-			"js": ["styles/css-injector.js", "app.js"]
+			"js": ["styles/css-injector.js", "imagine-job-tracking-page.js"]
 		}
 	],
 	"web_accessible_resources": ["styles.css"]

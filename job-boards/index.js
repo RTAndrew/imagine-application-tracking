@@ -45,6 +45,7 @@ class Xing extends JobBoardInterface {
 		super.sendJobDetailsToFormPage(details);
 	}
 }
+
 class StepStone extends JobBoardInterface {
 	constructor(url) {
 		super(url);
@@ -79,19 +80,14 @@ class StepStone extends JobBoardInterface {
 }
 
 const JobBoardFactory = (url) => {
-	if (url.includes("xing.com")) {
-		return new Xing(url);
-	}
-	if (url.includes("stepstone.de")) {
-		return new StepStone(url);
-	}
+	if (url.includes("xing.com")) return new Xing(url);
+	if (url.includes("stepstone.de")) return new StepStone(url);
 
 	return null;
 };
 
 // Listen for messages from background script
 chrome.runtime.onMessage.addListener(async (request, sender, sendResponse) => {
-	console.log("request", request);
 	if (request.action === "getJobDetails") {
 		console.log("Getting job details...");
 
@@ -103,6 +99,7 @@ chrome.runtime.onMessage.addListener(async (request, sender, sendResponse) => {
 
 		// 2. get the job details
 		const jobDetails = await jobBoardInstance.getJobDetails();
+
 		// 3. create the job details modal
 		const jobModal = new JobDetailsModal({
 			jobTitle: jobDetails.jobTitle,
@@ -111,53 +108,11 @@ chrome.runtime.onMessage.addListener(async (request, sender, sendResponse) => {
 			jobUrl: jobDetails?.url ?? "",
 		});
 
-		// 4. send the job details to the form page
-		// Job.createModal();
-		jobModal.createModal();
+		await jobModal.createModal();
+
 		sendResponse(jobDetails);
 
-		// getJobDetails().then((details) => {
-		// 	console.log("Job details:", details);
-		// 	const Job = new JobDetailsModal({
-		// 		jobTitle: details.jobTitle,
-		// 		companyName: details.companyName,
-		// 		hrRecruiter: details?.hrRecruiter ?? "",
-		// 		jobUrl: details?.url ?? "",
-		// 	});
-
-		// 	Job.createModal();
-
-		// 	// return;
-		// 	sendResponse(details);
-		// });
 		return true; // Keep message channel open for async response
 	}
 });
 
-// const sendJobDetailsToFormPage = (details) => {
-// 	chrome.runtime.sendMessage({ action: "fillJobDetails", content: details });
-// };
-
-// async function getJobDetails() {
-// 	try {
-// 		const jobTitle = document.querySelector('h1[data-xds="Hero"]');
-// 		const companyName = document.querySelector(
-// 			'p[data-testid="job-details-company-info-name"]'
-// 		);
-
-// 		sendJobDetailsToFormPage({
-// 			jobTitle: jobTitle ? jobTitle.textContent.trim() : "",
-// 			companyName: companyName ? companyName.textContent.trim() : "",
-// 			url: window.location.href,
-// 		});
-
-// 		return {
-// 			jobTitle: jobTitle ? jobTitle.textContent.trim() : "",
-// 			companyName: companyName ? companyName.textContent.trim() : "",
-// 			url: window.location.href,
-// 		};
-// 	} catch (error) {
-// 		console.error("Error getting job details:", error);
-// 		return { error: error.message };
-// 	}
-// }
