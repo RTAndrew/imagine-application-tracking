@@ -12,7 +12,8 @@
 			"matches": [
 				"https://*.xing.com/jobs/*",
 				"https://*.stepstone.de/*",
-				"https://*.join.com/*"
+				"https://*.join.com/*",
+				"https://*.greenhouse.io/*"
 			],
 			"js": [
 				"styles/css-injector.js",

@@ -82,7 +82,6 @@ class CSSInjector {
                 font-weight: 500;
             }
             .imaginejob-input {
-                width: 100%;
                 padding: 10px;
                 border: 1px solid #5a5a5a;
                 border-radius: 5px;

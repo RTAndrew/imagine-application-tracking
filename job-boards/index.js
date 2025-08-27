@@ -126,10 +126,49 @@ class Join extends JobBoardInterface {
 	}
 }
 
+class Greenhouse extends JobBoardInterface {
+	constructor(url) {
+		super(url);
+	}
+
+	getJobTitle() {
+		const aboutJobDiv = document
+			.querySelector("div[class=job__title]")
+			.querySelector("h1");
+
+		return aboutJobDiv.textContent.trim();
+	}
+
+	async getJobDetails() {
+		try {
+			const jobTitle = this.getJobTitle();
+
+			const details = {
+				jobTitle: jobTitle ? jobTitle : "",
+				companyName: "",
+				url: window.location.href,
+				recruiter: "",
+			};
+
+			this.sendJobDetailsToFormPage(details);
+
+			return details;
+		} catch (error) {
+			console.error("Error getting job details:", error);
+			return { error: error.message };
+		}
+	}
+
+	async sendJobDetailsToFormPage(details) {
+		super.sendJobDetailsToFormPage(details);
+	}
+}
+
 const JobBoardFactory = (url) => {
 	if (url.includes("xing.com")) return new Xing(url);
 	if (url.includes("stepstone.de")) return new StepStone(url);
 	if (url.includes("join.com")) return new Join(url);
+	if (url.includes("greenhouse.io")) return new Greenhouse(url);
 
 	return null;
 };
