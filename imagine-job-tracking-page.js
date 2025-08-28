@@ -9,7 +9,7 @@ const initializeForm = () => {
 	);
 
 	if (emailInput) {
-		emailInput.value = "insanityrodax@gmail.com";
+		emailInput.value = "";
 		emailInput.dispatchEvent(new Event("input", { bubbles: true }));
 	}
 
