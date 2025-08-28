@@ -3,6 +3,7 @@ console.log("Imagine Job Tracking background script loaded");
 const FORM_URL = "https://docs.google.com/forms/d/e/1FAIpQLSeDBBvxuso7eWPZhAM0DEPPaH1N_BxeH-8UWcSJBFTtUd8tCA/viewform"
 
 const initializeForm = () => {
+	console.log("Initializing form...");
 	const emailInput = document.querySelector(
 		"input[type='email'][jsname='YPqjbf']"
 	);
@@ -10,6 +11,16 @@ const initializeForm = () => {
 	if (emailInput) {
 		emailInput.value = "insanityrodax@gmail.com";
 		emailInput.dispatchEvent(new Event("input", { bubbles: true }));
+	}
+
+	// If the form has been submitted, click the return link
+	const hasFormSubmitted = document
+		.querySelector("[role=heading]")
+		.textContent.trim()
+		.includes("Sky-rocket your job");
+
+	if (hasFormSubmitted && !emailInput) {
+		document.querySelectorAll("a")?.[1]?.click();
 	}
 };
 
@@ -67,10 +78,6 @@ const fillJobForm = (details) => {
 	if (submitButton) {
 		submitButton.click();
 		submitButton.dispatchEvent(new Event("click", { bubbles: true }));
-
-		setTimeout(() => {
-			window.location.reload();
-		}, 3000);
 	}
 };
 
